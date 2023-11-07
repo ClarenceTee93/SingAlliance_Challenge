@@ -63,9 +63,18 @@ def createDf():
 
 def efficientFrontier(df, ret, std):
     """
-    To compute the efficient frontier: 
-    1) Fix a target return level and minimize volatility for each target return
-    2) Fix volatility level and maximize return for each target volatility
+    To compute the efficient frontier, fix a target return level and minimize volatility for each target return.
+
+    Parameters
+    ----------
+    df : pandas dataframe of the three assets (btcusdt, ethusdt, ltcusdt)
+    ret : average return of each asset over the predefined period
+    std : volatility of each asset over the predefined period
+
+    Returns
+    -------
+    output_arr_min_var : portfolio volatilty
+
     """
     output_arr_min_var = []
     ret_out = []
@@ -82,17 +91,6 @@ def efficientFrontier(df, ret, std):
         return (portfolio_returns(weights) / portfolio_sd(weights))
 
     def minimumVarOpt(constraints = None):
-        """
-        Minimum Variance Portfolio Optimization
-        
-        Parameters
-        ----------
-        nAssets : int, number of assets
-
-        Returns
-        -------
-        list of portfolio weights
-        """
         if constraints is not None:
             constraints = constraints
         else:
@@ -138,6 +136,12 @@ def efficientFrontier(df, ret, std):
     return output_arr_min_var, ret_out, weightsAndSharpe
 
 def generateRandPorts(df_returns):
+    """
+    This function generates 10,000 random portfolios with the expected return and volatility from the btc, eth and ltc portfolio.
+    The purpose is to get an overall sense of 
+    
+    """
+
     returns_list = []
     vol_list = []
     wts_list = []
@@ -161,8 +165,10 @@ def generateRandPorts(df_returns):
     ports = pd.DataFrame({'Return':returns_list, 'Vol':vol_list})
     wts_df = pd.DataFrame(np.vstack(tuple(wts_list)), columns=['btcusdt', 'ethusdt', 'ltcusdt'])
     rand_ports = pd.concat([ports, wts_df], axis=1)
+    rand_ports['sharpe'] = rand_ports['Return'] / rand_ports['Vol']
 
     frontier1 = rand_ports.sort_values(by='Vol')[["Return", "Vol"]].rolling(250).max().dropna().rolling(100).mean()
+    max_sharpe_port_wts = rand_ports[rand_ports.sharpe == rand_ports.sharpe.max()][["btcusdt", "ethusdt", "ltcusdt"]].to_dict('records')[0]
 
     fig, ax = plt.subplots(1, 1, figsize=(12, 8), constrained_layout=True)
 
@@ -176,7 +182,10 @@ def generateRandPorts(df_returns):
     fig.suptitle("Random Portfolios")
     fig.savefig("efficient_frontier.png")
 
-    return None
+    print("Portfolio Weights: ")
+    print(max_sharpe_port_wts)
+    
+    return max_sharpe_port_wts
 
 data_output = []
 ticker_list = ["btcusdt", "ethusdt", "ltcusdt"]
