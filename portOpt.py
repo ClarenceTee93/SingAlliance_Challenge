@@ -167,7 +167,7 @@ def generateRandPorts(df_returns):
     fig, ax = plt.subplots(1, 1, figsize=(12, 8), constrained_layout=True)
 
     ax.scatter(ports.Vol, ports.Return)
-    ax.plot(frontier1.Vol, frontier1.Return, color = 'red')
+    ax.plot(frontier1.Vol, frontier1.Return, color = 'red', label="Efficient Frontier")
     ax.set_xlabel("Expected Vol (%)", fontsize=fnt_size)
     ax.set_ylabel("Expected Return (%)", fontsize=fnt_size)
     ax.xaxis.set_tick_params(which='both', labelbottom=True, labelsize=fnt_size)
@@ -175,7 +175,6 @@ def generateRandPorts(df_returns):
 
     fig.suptitle("Random Portfolios")
     fig.savefig("efficient_frontier.png")
-
 
     return None
 
@@ -200,7 +199,7 @@ returns = (1 + df_returns).prod() - 1
 stdev = (df_returns).cov()
 
 vol, ret, w_s = efficientFrontier(df=df, ret=returns, std=stdev)
-
+generateRandPorts(df_returns)
 
 
 
