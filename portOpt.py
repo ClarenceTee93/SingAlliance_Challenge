@@ -9,6 +9,7 @@ import websocket
 from scipy.optimize import minimize
 import numpy as np
 import matplotlib.pyplot as plt
+import logging
 
 def on_open(ws):
     data = {
@@ -88,7 +89,7 @@ def efficientFrontier(df, ret, cov):
     -------
     output_arr_min_var : list, portfolio volatilty
     ret_out : list, portfolio returns
-    weightsAndSharpe : pd.DataFrame, dataframe containing weights of assets and the corresponding risk-adjusted returns and volatility
+    weightsAndSharpe : pd.DataFrame, pandas dataframe containing weights of assets and the corresponding risk-adjusted returns and volatility
     """
     output_arr_min_var = []
     ret_out = []
