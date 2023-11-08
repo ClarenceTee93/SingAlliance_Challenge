@@ -224,7 +224,7 @@ def generateRandPorts(df_returns):
     fig.suptitle("Random Portfolios")
     fig.savefig("efficient_frontier.png")
 
-    print("Portfolio Weights: ")
+    print("Portfolio Weights from Generating Random Portfolios: ")
     print(max_sharpe_port_wts)
     
     return max_sharpe_port_wts
