@@ -1,5 +1,6 @@
 # SingAlliance Code Challenge
 Introduction:
+
 This repository contains the submission for the SingAlliance Code Challenge. 
 
 Steps to run:
@@ -17,5 +18,6 @@ Description of workflow:
 4) A plot of the efficient frontier and a log file will be output.
 
 Results:
+
 Given that the average returns for all 3 assets from 2023-09-01 00:00:00 to 2023-09-10 23:00:00 are negative (also observed from plotting the prices of all 3 assets), the portfolio weights obtained is deemed as a sub-optimal solution which is under 
 the belly of the efficient frontier, thus making it an "uninvestable" portfolio.
