@@ -2,6 +2,13 @@
 Introduction:
 This repository contains the submission for the SingAlliance Code Challenge. 
 
+Steps to run:
+1) Clone this Github Repository: git clone https://github.com/ClarenceTee93/SingAlliance_Challenge.git
+2) cd into the directory "SingAlliance_Challenge"
+3) pipenv install -r requirements.txt
+4) pipenv shell
+5) python main.py
+
 Description of workflow:    
 1) Connect to the Huobi API to pull btcusdt, ethusdt & ltcusdt futures data from the exchange. Data is processed from json format into a pandas dataframe for subsequent easy manipulation.
 2) Two ways of obtaining optimal portfolio weights are presented:
