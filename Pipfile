@@ -5,6 +5,11 @@ name = "pypi"
 
 [packages]
 requests = "*"
+pandas = "*"
+numpy = "*"
+matplotlib = "*"
+websocket-client = "*"
+scipy = "*"
 
 [dev-packages]
 
