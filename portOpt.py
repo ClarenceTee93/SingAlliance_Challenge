@@ -74,7 +74,7 @@ def createDf():
     
     return portfolio1, portfolio1_ret
 
-def efficientFrontier(df, ret, std):
+def efficientFrontier(df, ret, cov):
     """
     To compute the efficient frontier, fix a target return level and minimize volatility for each target return.
 
@@ -82,12 +82,12 @@ def efficientFrontier(df, ret, std):
     ----------
     df : pd.DataFrame, prices of the three assets (btcusdt, ethusdt, ltcusdt)
     ret : average return of each asset over the predefined period
-    std : volatility of each asset over the predefined period
+    cov : pd.DataFrame, covariance matrix of the three assets
 
     Returns
     -------
     output_arr_min_var : list, portfolio volatilty
-    ret_out : 
+    ret_out : list, portfolio returns
     weightsAndSharpe : pd.DataFrame, dataframe containing weights of assets and the corresponding risk-adjusted returns and volatility
     """
     output_arr_min_var = []
@@ -99,7 +99,7 @@ def efficientFrontier(df, ret, std):
         return (np.sum(ret * weights))
 
     def portfolio_sd(weights):
-        return np.sqrt(np.transpose(weights) @ (std) @ weights)
+        return np.sqrt(np.transpose(weights) @ (cov) @ weights)
 
     def sharpe(weights):
         return (portfolio_returns(weights) / portfolio_sd(weights))
@@ -156,12 +156,11 @@ def generateRandPorts(df_returns):
 
     Parameters:
     -----------
-    df_returns : 
+    df_returns : pd.DataFrame, pandas dataframe of returns on all 3 assets.
 
     Returns
     -------
     max_sharpe_port_wts : dict, dictionary of asset names and their corresponding weights.
-    
     """
 
     returns_list = []
@@ -228,10 +227,11 @@ for ticker in ticker_list:
 
 df, df_returns = createDf()
 print(df)
+# Check if this returns are computed correctly throughout.
 returns = (1 + df_returns).prod() - 1
-stdev = (df_returns).cov()
+cov_mat = (df_returns).cov()
 
-vol, ret, w_s = efficientFrontier(df=df, ret=returns, std=stdev)
+vol, ret, w_s = efficientFrontier(df=df, ret=returns, cov=cov_mat)
 generateRandPorts(df_returns)
 
 
