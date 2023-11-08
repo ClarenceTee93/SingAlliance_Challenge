@@ -244,7 +244,7 @@ if __name__ == '__main__':
             )
             ws.run_forever()
         except Exception:
-            print("error")
+            print("Check logs for further information!")
     
     df, df_returns = createDf()
     print(df)
