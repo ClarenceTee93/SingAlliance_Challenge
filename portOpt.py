@@ -229,29 +229,29 @@ def generateRandPorts(df_returns):
     
     return max_sharpe_port_wts
 
-data_output = []
-ticker_list = ["btcusdt", "ethusdt", "ltcusdt"]
-for ticker in ticker_list:
-    try:
-        ws = websocket.WebSocketApp(
-            "wss://api.huobi.pro/ws",
-            on_open=on_open,
-            on_message=on_message,
-            on_error=on_error,
-            on_close=on_close
-        )
-        ws.run_forever()
-    except Exception:
-        print("error")
+# data_output = []
+# ticker_list = ["btcusdt", "ethusdt", "ltcusdt"]
+# for ticker in ticker_list:
+#     try:
+#         ws = websocket.WebSocketApp(
+#             "wss://api.huobi.pro/ws",
+#             on_open=on_open,
+#             on_message=on_message,
+#             on_error=on_error,
+#             on_close=on_close
+#         )
+#         ws.run_forever()
+#     except Exception:
+#         print("error")
 
-df, df_returns = createDf()
-print(df)
-# Check if this returns are computed correctly throughout.
-returns = (1 + df_returns).prod() - 1
-cov_mat = (df_returns).cov()
+# df, df_returns = createDf()
+# print(df)
+# # Check if this returns are computed correctly throughout.
+# returns = (1 + df_returns).prod() - 1
+# cov_mat = (df_returns).cov()
 
-vol, ret, w_s = efficientFrontier(df=df, ret=returns, cov=cov_mat)
-generateRandPorts(df_returns)
+# vol, ret, w_s = efficientFrontier(df=df, ret=returns, cov=cov_mat)
+# generateRandPorts(df_returns)
 
 if __name__ == '__main__':
     data_output = []
