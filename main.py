@@ -248,7 +248,6 @@ if __name__ == '__main__':
     
     df, df_returns = createDf()
     print(df)
-    # Check if this returns are computed correctly throughout.
     returns = (1 + df_returns).prod() - 1
     cov_mat = (df_returns).cov()
     
