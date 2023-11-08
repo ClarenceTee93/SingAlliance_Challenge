@@ -48,6 +48,18 @@ def on_close(ws):
     print("### Connection closed ###")
 
 def createDf():
+    """
+    This function processes and cleans output extract from the Huobi Exchange API into pandas dataframes.
+
+    Parameters:
+    -----------
+    None
+
+    Returns:
+    --------
+    portfolio1 : pd.DataFrame, prices of the 3 assets (btcusdt, ethusdt, ltcusdt)
+    portfolio1_ret : pd.DataFrame, returns of the 3 assets (fractional change)
+    """
     cleaned_df = []
     for j in data_output:
         if 'data' in j.keys():
@@ -58,8 +70,9 @@ def createDf():
 
     df = pd.concat(cleaned_df)
     portfolio1 = pd.pivot(df[["close", "datetime", "asset"]], index='datetime', columns = 'asset', values='close')
+    portfolio1_ret = portfolio1.pct_change().dropna()
     
-    return portfolio1, portfolio1.pct_change().dropna()
+    return portfolio1, portfolio1_ret
 
 def efficientFrontier(df, ret, std):
     """
@@ -67,14 +80,15 @@ def efficientFrontier(df, ret, std):
 
     Parameters
     ----------
-    df : pandas dataframe of the three assets (btcusdt, ethusdt, ltcusdt)
+    df : pd.DataFrame, prices of the three assets (btcusdt, ethusdt, ltcusdt)
     ret : average return of each asset over the predefined period
     std : volatility of each asset over the predefined period
 
     Returns
     -------
-    output_arr_min_var : portfolio volatilty
-
+    output_arr_min_var : list, portfolio volatilty
+    ret_out : 
+    weightsAndSharpe : pd.DataFrame, dataframe containing weights of assets and the corresponding risk-adjusted returns and volatility
     """
     output_arr_min_var = []
     ret_out = []
@@ -139,6 +153,14 @@ def generateRandPorts(df_returns):
     """
     This function generates 10,000 random portfolios with the expected return and volatility from the btc, eth and ltc portfolio.
     The purpose is to get an overall sense of 
+
+    Parameters:
+    -----------
+    df_returns : 
+
+    Returns
+    -------
+    max_sharpe_port_wts : dict, dictionary of asset names and their corresponding weights.
     
     """
 
@@ -151,7 +173,9 @@ def generateRandPorts(df_returns):
     fnt_size = 10
 
     for i in range(10000):
+        # Generate 3 random numbers
         wts = np.random.random(3)
+        # Normalize the 3 random numbers so they add up to 1.
         norm_wts = wts / np.sum(wts)
         wts_list.append(norm_wts)
 
