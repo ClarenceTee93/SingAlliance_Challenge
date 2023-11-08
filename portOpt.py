@@ -12,6 +12,9 @@ import matplotlib.pyplot as plt
 import logging
 
 def on_open(ws):
+    """
+    Function for WebSocketApp
+    """
     data = {
         "req": "market." + ticker + ".kline.60min",
         "id": "id1",
@@ -20,12 +23,18 @@ def on_open(ws):
     send_message(ws, data)
 
 def send_message(ws, message_dict):
+    """
+    Function for WebSocketApp 
+    """
     data = json.dumps(message_dict).encode()
     print("Sending Message:")
     pprint.pprint(message_dict)
     ws.send(data)
 
 def on_message(ws, message):
+    """
+    Function for WebSocketApp
+    """
     unzipped_data = gzip.decompress(message).decode()
     msg_dict = json.loads(unzipped_data)
     print("Recieved Message: ")
@@ -40,11 +49,17 @@ def on_message(ws, message):
         print("Closing Connection")
 
 def on_error(ws, error):
+    """
+    Function for WebSocketApp
+    """
     print("Error: " + str(error))
     error = gzip.decompress(error).decode()
     print(error)
     
 def on_close(ws):
+    """
+    Function for WebSocketApp
+    """
     ws.close()
     print("### Connection closed ###")
 
