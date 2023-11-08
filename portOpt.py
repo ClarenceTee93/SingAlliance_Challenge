@@ -50,7 +50,7 @@ def on_close(ws):
 
 def createDf():
     """
-    This function processes and cleans output extract from the Huobi Exchange API into pandas dataframes.
+    Processes and cleans output extracted from the Huobi Exchange API into pandas dataframes.
 
     Parameters:
     -----------
@@ -59,7 +59,7 @@ def createDf():
     Returns:
     --------
     portfolio1 : pd.DataFrame, prices of the 3 assets (btcusdt, ethusdt, ltcusdt)
-    portfolio1_ret : pd.DataFrame, returns of the 3 assets (fractional change)
+    portfolio1_ret : pd.DataFrame, returns (fractional change) of the 3 assets
     """
     cleaned_df = []
     for j in data_output:
@@ -82,7 +82,7 @@ def efficientFrontier(df, ret, cov):
     Parameters
     ----------
     df : pd.DataFrame, prices of the three assets (btcusdt, ethusdt, ltcusdt)
-    ret : average return of each asset over the predefined period
+    ret : pd.Series, average return of each asset over the predefined period
     cov : pd.DataFrame, covariance matrix of the three assets
 
     Returns
@@ -152,8 +152,9 @@ def efficientFrontier(df, ret, cov):
 
 def generateRandPorts(df_returns):
     """
-    This function generates 10,000 random portfolios with the expected return and volatility from the btc, eth and ltc portfolio.
-    The purpose is to get an overall sense of 
+    Generates 10,000 random portfolios with the expected return and volatility from a sample of btc, eth and ltc 
+    during the interval 2023-09-01T00:00:00 to 2023-09-01T23:00:00. The purpose is to obtain a risk-return profile 
+    and the efficient frontier.
 
     Parameters:
     -----------
@@ -179,9 +180,11 @@ def generateRandPorts(df_returns):
         norm_wts = wts / np.sum(wts)
         wts_list.append(norm_wts)
 
+        # Compute the return on the random portfolio
         randPortReturn = expRet.dot(norm_wts)
         returns_list.append(randPortReturn)
-        
+
+        # Compute the volatility of the random portfolio
         randPortVar = np.dot(np.dot(norm_wts.T, data_cov), norm_wts)
         randPortStd = np.sqrt(randPortVar)
         vol_list.append(randPortStd)
