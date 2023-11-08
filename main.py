@@ -220,7 +220,7 @@ def generateRandPorts(df_returns):
     ax.set_ylabel("Expected Return (%)", fontsize=fnt_size)
     ax.xaxis.set_tick_params(which='both', labelbottom=True, labelsize=fnt_size)
     ax.yaxis.set_tick_params(which='both', labelbottom=True, labelsize=fnt_size)
-
+    ax.legend()
     fig.suptitle("Random Portfolios")
     fig.savefig("efficient_frontier.png")
 
