@@ -253,5 +253,8 @@ if __name__ == '__main__':
     cov_mat = (df_returns).cov()
     
     vol, ret, w_s = efficientFrontier(df=df, ret=returns, cov=cov_mat)
+    optimal_port_mvo = w_s[w_s.SharpeRatio == w_s.SharpeRatio.max()][['btcusdt', 'ethusdt', 'ltcusdt']].to_dict('records')[0]
+    print("Optimal Weights from MVO: ")
+    print(optimal_port_mvo)
     generateRandPorts(df_returns)
 
